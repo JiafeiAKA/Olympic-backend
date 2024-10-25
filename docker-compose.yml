@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-olympic
+    environment:
+      MYSQL_ROOT_PASSWORD: password     
+      MYSQL_DATABASE: olympic
+   
+    ports:
+      - "3307:3306"    
+    volumes:
+      - ./data:/var/lib/mysql
+      # - ./olympic-init.sql:/docker-entrypoint-initdb.d/olympic-init.sql
+    networks:
+      - olympic-net
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppassword"]
+      interval: 60s
+      timeout: 10s
+      retries: 10
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-olympic
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - olympic-net
+
+  db-init:
+    image: mysql:8.0
+    container_name: db-init
+    depends_on:
+      - mysql
+    volumes:
+      - ./olympic-init.sql:/olympic-init.sql
+      - ./entrypoint.sh:/entrypoint.sh
+    networks:
+      - olympic-net
+    entrypoint: sh /entrypoint.sh
+
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - olympic-net
+    depends_on:
+      # - mysql
+      - mysql
+
+  frontend:
+    build:
+      context: ./vue-frontend-product
+      dockerfile: Dockerfile
+    container_name: vue-frontend-olympic
+    ports:
+      - "8082:80"
+    networks:
+      - olympic-net
+
+
+
+networks:
+  olympic-net:
+    driver: bridge
