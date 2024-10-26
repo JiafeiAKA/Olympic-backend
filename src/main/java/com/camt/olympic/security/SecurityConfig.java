@@ -22,7 +22,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**","/api/comments/**",
                                 "/api/login/**","/api/login",
                                 "/api/althletes",
-                                "/api/althletes/**").permitAll()
+                                "/api/althletes/**",
+                                "/api/medal",
+                                "/api/medal/**").permitAll()
 
                         .anyRequest().authenticated()
 

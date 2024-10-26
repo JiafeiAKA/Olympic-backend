@@ -1,14 +1,22 @@
 package com.camt.olympic.security;
 
+import com.camt.olympic.entity.OlympicYear;
+import com.camt.olympic.repositories.AthleteRepository;
+import com.camt.olympic.repositories.OlympicYearRepository;
 import com.camt.olympic.security.user.UserRepository;
 import com.camt.olympic.security.user.Users;
 import com.camt.olympic.security.user.token.AuthService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DataInitializer {
@@ -16,6 +24,14 @@ public class DataInitializer {
     private final UserRepository userRepository;
     @Autowired
     private AuthService authService;
+
+
+
+    @Autowired
+    private OlympicYearRepository olympicYearRepository;
+
+    @Autowired
+    private AthleteRepository athleteRepository;
 
     public DataInitializer(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -41,6 +57,47 @@ public class DataInitializer {
             } else {
                 System.out.println("Admin user already exists.");
             }
+        };
+    }
+
+
+
+
+    @Bean
+    public CommandLineRunner insertSummarizedOlympicData()  {
+        return args -> {
+
+
+            List<Object[]> results =     athleteRepository.findOlympicYearSummarizedData();
+            List<OlympicYear> olympicYears = results.stream()
+                    .map(result -> new OlympicYear(
+                            (int) result[0], // year
+                            (String) result[1], // sport
+                            ((BigDecimal) result[2]).intValue(), // male
+                            ((BigDecimal) result[3]).intValue(), // female
+                            ((BigDecimal) result[4]).intValue(), // gold
+                            ((BigDecimal) result[5]).intValue(), // silver
+                            ((BigDecimal) result[6]).intValue(), // bronze
+                            ((BigDecimal) result[7]).intValue(), // maleGold
+                            ((BigDecimal) result[8]).intValue(), // maleSilver
+                            ((BigDecimal) result[9]).intValue(), // maleBronze
+                            ((BigDecimal) result[10]).intValue(), // femaleGold
+                            ((BigDecimal) result[11]).intValue(), // femaleSilver
+                            ((BigDecimal) result[12]).intValue(), // femaleBronze
+                            (String) result[13], // team
+                            (String) result[14], // noc
+                            (String) result[15], // games
+                            (String) result[16], // season
+                            (String) result[17], // city
+                            (String) result[18], // event
+                            ((BigDecimal) result[19]).intValue() // totalMedals
+                    ))
+                    .collect(Collectors.toList());
+
+              olympicYearRepository.saveAll(olympicYears);
+
+
+
         };
     }
 }

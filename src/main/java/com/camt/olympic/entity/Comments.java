@@ -26,6 +26,7 @@ public class Comments {
     private String countryId;
 
     @Column(columnDefinition = "TEXT")
+    @Lob
     private String commentText;
 
     @Column(name = "created_at", nullable = false, updatable = false)
