@@ -71,7 +71,7 @@ public class UserDaoImpl implements UserDao {
             }
 
             String token = tokenUtil.generateToken(loginRequest.getUsername());
-            return ResponseEntity.ok(new AuthResponse(token));
+            return ResponseEntity.ok(new AuthResponse(token,users.get().getUsername(),users.get().getUserId()));
         }
         return ResponseEntity.status(404).body("User not found");
     }

@@ -18,6 +18,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        //.requestMatchers("/api/comments","/api/comments/**").permitAll()
                         .requestMatchers("/api/users/**","/api/comments/**",
                                 "/api/login/**","/api/login",
                                 "/api/althletes",

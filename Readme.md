@@ -145,6 +145,7 @@ http://localhost:8080/api/comments/newComment
 `
 {
 "userId": 888888,
+"username" : "test",
 "countryId": "USA",
 "commentText": "The WHERE clause is optional, but you'll usually want it, unless you really want to delete every row from the table.",
 "createdAt": "2024-10-25T10:15:30",

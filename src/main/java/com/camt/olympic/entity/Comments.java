@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -13,11 +14,13 @@ import java.time.LocalDateTime;
 @Table(name = "Comments")
 public class Comments {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId;
 
     private int userId;
+    private String username;
 
     @Column(columnDefinition = "TEXT")
     private String countryId;
@@ -25,67 +28,15 @@ public class Comments {
     @Column(columnDefinition = "TEXT")
     private String commentText;
 
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDate createdAt;
 
-    private LocalDateTime updatedAt;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDate updatedAt;
 
     @Column(length = 255)
     private String profileUri;
 
-    // Getters and Setters
-    public int getCommentId() {
-        return commentId;
-    }
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
-    }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(String countryId) {
-        this.countryId = countryId;
-    }
-
-    public String getCommentText() {
-        return commentText;
-    }
-
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getProfileUri() {
-        return profileUri;
-    }
-
-    public void setProfileUri(String profileUri) {
-        this.profileUri = profileUri;
-    }
 }

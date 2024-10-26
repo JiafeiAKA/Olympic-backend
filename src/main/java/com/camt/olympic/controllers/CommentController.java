@@ -18,6 +18,11 @@ public class CommentController {
 
     final CommentsService commentsService;
 
+    /**
+     *
+     * @param country ระหัสประเทศ 3 ตัว เช่น USA
+     * @return
+     */
     @GetMapping
     public List<Comments> getAllCommentsByCountry(
             @RequestParam(value = "country") String country
@@ -25,6 +30,11 @@ public class CommentController {
        return commentsService.getCommentsByCountry(country);
     }
 
+    /**
+     *
+     * @param id id ของ comment
+     * @return
+     */
     @GetMapping("/get")
     public Optional<Comments> getCommentByCommentId(
             @RequestParam(value = "id") int id
