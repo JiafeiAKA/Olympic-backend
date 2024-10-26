@@ -13,4 +13,5 @@ public interface UserDao {
     ResponseEntity<Void> deleteById(int id);
 
     Optional<Users> updateRole(int id, Users users);
+    ResponseEntity<?> login(LoginRequest loginRequest);
 }

@@ -1,6 +1,9 @@
 package com.camt.olympic.security.user;
 
+import com.camt.olympic.security.user.token.AuthService;
+import com.camt.olympic.security.user.token.TokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +13,11 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
-    final UserRepository userRepository;
+    private  final UserRepository userRepository;
+    private  final TokenUtil tokenUtil;
+
+    @Autowired
+    private AuthService authService;
 
     @Override
     public List<Users> getAllUser() {
@@ -49,5 +56,23 @@ public class UserDaoImpl implements UserDao {
 
 
         return Optional.empty();
+    }
+
+    @Override
+    public ResponseEntity<?> login(LoginRequest loginRequest) {
+       Optional<Users> users =  userRepository.getUser(loginRequest.getUsername());
+
+        if(users.isPresent()){
+
+            boolean isMatch = authService.matchPassword(loginRequest.getPassword(),users.get().getPasswordHash());
+
+            if(!isMatch){
+                return ResponseEntity.status(401).body("Invalid password");
+            }
+
+            String token = tokenUtil.generateToken(loginRequest.getUsername());
+            return ResponseEntity.ok(new AuthResponse(token));
+        }
+        return ResponseEntity.status(404).body("User not found");
     }
 }

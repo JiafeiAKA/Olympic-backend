@@ -2,6 +2,8 @@ package com.camt.olympic.security;
 
 import com.camt.olympic.security.user.UserRepository;
 import com.camt.olympic.security.user.Users;
+import com.camt.olympic.security.user.token.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -12,7 +14,8 @@ import java.time.LocalDateTime;
 public class DataInitializer {
 
     private final UserRepository userRepository;
-//    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthService authService;
 
     public DataInitializer(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -27,7 +30,8 @@ public class DataInitializer {
                 // เพิ่มผู้ใช้ admin
                 Users admin = new Users();
                 admin.setUsername("admin");
-                admin.setPasswordHash("admin"); // เข้ารหัสรหัสผ่าน
+                String passHash = authService.encodePassword("admin");
+                admin.setPasswordHash(passHash); // เข้ารหัสรหัสผ่าน
                 admin.setEmail("admin@mail.com");
                 admin.setRole(Users.Role.ADMIN);
                 admin.setCreatedAt(LocalDateTime.now());

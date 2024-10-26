@@ -1,7 +1,10 @@
 package com.camt.olympic.security.user;
 
+import com.camt.olympic.security.user.token.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +17,12 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
+    @Autowired
+    private AuthService authService;
+
     final UserService userService;
+
+
 
     @GetMapping({"","/"})
     public List<Users> getAllUser(){
@@ -34,7 +42,9 @@ public class UserController {
      */
     @PostMapping("/newUser")
     public ResponseEntity<Users> createUser(@RequestBody Users users){
-        Users create = userService.saveUser(users);
+        Users userP = users;
+        userP.setPasswordHash(authService.encodePassword(users.getPasswordHash()));
+        Users create = userService.saveUser(userP);
         return ResponseEntity.ok(create);
 
     }

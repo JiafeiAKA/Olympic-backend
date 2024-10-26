@@ -38,5 +38,10 @@ public class UserServiceImpl implements UserService {
         return userDao.updateRole(id, users);
     }
 
+    @Override
+    public ResponseEntity<?> login(LoginRequest loginRequest) {
+        return userDao.login(loginRequest);
+    }
+
 
 }

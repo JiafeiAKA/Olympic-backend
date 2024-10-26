@@ -11,4 +11,5 @@ public interface UserService {
     Users saveUser(Users users);
     ResponseEntity<Void> deleteById(int id);
     Optional<Users> updateRole(int id, Users users);
+    ResponseEntity<?> login(LoginRequest loginRequest);
 }

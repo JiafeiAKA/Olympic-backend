@@ -43,6 +43,12 @@
 และต้อง createAt ต้องเป็น format ที่ถูกต้อง
 ตัวอย่าง
 
+**สำคัญ**
+
+โดยมีบทบาท role
+
+`REGISTERED กับ ADMIN`
+
 `
 {
 "username": "user2",
@@ -187,3 +193,28 @@ EX
 
 
 
+**LOGIN**
+
+ใช้ร่วมกับ Parambody 
+
+`
+{
+"username": "admin",
+"password": "admin"
+}
+`
+
+POST 
+
+http://localhost:8080/api/login
+
+คือ 3 สถานะ 
+200 ok
+401 ระหัสผิด
+404 ไม่เจอ user
+
+หลังจาก login เสร็จแล้ว
+
+ผู้ใช้ จะได้ token ให้เก็บไว้ใน cooike แล้วขอเข้าใช้ใหม่ โดยใส่ไว้ใน header
+
+Authorization: Bearer <token>
