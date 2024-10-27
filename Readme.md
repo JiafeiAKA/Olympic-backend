@@ -219,3 +219,18 @@ http://localhost:8080/api/login
 ผู้ใช้ จะได้ token ให้เก็บไว้ใน cooike แล้วขอเข้าใช้ใหม่ โดยใส่ไว้ใน header
 
 Authorization: Bearer <token>
+
+
+**Country Detail**
+
+GET ประเทศโดย code
+
+`
+http://localhost:8080/api/country?countryCode=<Code ประเทศ>
+`
+
+ตัวอยา่ง
+
+`
+http://localhost:8080/api/country?countryCode=USA
+`

@@ -14,10 +14,10 @@ import java.util.Optional;
 @Repository
 public interface CommentsRepository extends JpaRepository<Comments,Integer> {
 
-    @Query(value = "SELECT * FROM Comments WHERE country_id = :country", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE country_id = :country", nativeQuery = true)
     List<Comments> getCommentsByCountry(@Param("country") String country);
 
-    @Query(value = "SELECT * FROM Comments WHERE comment_id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE comment_id = :id", nativeQuery = true)
     Optional<Comments> getCommentsByCommentId(@Param("id") int id);
 
 

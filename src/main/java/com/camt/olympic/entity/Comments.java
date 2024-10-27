@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "Comments")
+@Table(name = "comments")
 public class Comments {
 
 

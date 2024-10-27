@@ -24,6 +24,8 @@ public class SecurityConfig {
                                 "/api/althletes",
                                 "/api/althletes/**",
                                 "/api/medal",
+                                "/api/country",
+                                "/api/country/**",
                                 "/api/medal/**").permitAll()
 
                         .anyRequest().authenticated()
